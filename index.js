@@ -57,7 +57,11 @@ app.use((req, res) => {
 // ─── Global error handler ─────────────────────────────────────────────────────
 app.use((err, req, res, next) => {
   console.error("Unhandled error:", err.message);
-  res.status(500).json({ message: "Internal server error" });
+  res.status(500).json({ 
+    message: "Internal server error", 
+    error: process.env.NODE_ENV === 'development' ? err.message : "Details hidden for security",
+    hint: "Ensure MONGO_URI and JWT_SECRET are set in Vercel settings."
+  });
 });
 
 // ─── Start ────────────────────────────────────────────────────────────────────
